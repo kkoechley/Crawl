@@ -8,8 +8,8 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 import os
 
-ssai = '23223'
-ssaiperc = '98.78'
+ssai = '23789'
+ssaiperc = '98.85'
 
 green = "GREEN"
 red = "RED"
@@ -35,10 +35,6 @@ mvpdBreak = 'WOW'
 from selenium.common.exceptions import NoSuchAttributeException
 from selenium.webdriver.common.keys import Keys
 
-url = 'https://pulse.conviva.com/login/'
-user = {'username': 'ssargent@adobe.com',
-        'password': ''}
-
 chromedriver = "/users/rutherfordle/PycharmProjects/Crawl/chromedriver"
 os.environ["webdriver.chrome.driver"] = chromedriver
 driver = webdriver.Chrome(chromedriver)
@@ -48,7 +44,7 @@ username = driver.find_element_by_name("username")
 password = driver.find_element_by_name("password")
 
 username.send_keys("ssargent@adobe.com")
-password.send_keys("Prim3tim3")
+password.send_keys("")
 
 driver.find_element_by_class_name("submit").click()
 time.sleep(2)
