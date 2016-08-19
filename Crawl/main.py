@@ -1,33 +1,33 @@
-import requests
-from requests import session
-import httplib2
 import time
 import re
-from bs4 import BeautifulSoup
-from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
-import os
+import sys
+sys.path.insert(0, '/Users/rutherfordle/PycharmProjects/')
+import CrawlConnect
 
-ssai = '23789'
-ssaiperc = '98.85'
+#Import WebDriver, page direct and credential from external directory CrawlConnect
+driver = CrawlConnect.driver
+
+ssai = '25843'
+ssaiperc = '99.75'
 
 green = "GREEN"
 red = "RED"
 buffCap = 5.0
 vsfCap = 10.0
 vstCap = 15.0
-authnSDK = .70
-authzSDK = .70
-authnMVPD = .70
-authzMVPD = .70
+authnSDK = 70
+authzSDK = 70
+authnMVPD = 70
+authzMVPD = 70
 authzLatencyMax = 15000
 sdkHoursBefore = 1
 mvpdHoursBefore = 1
-authnSDKRed = green
-authzSDKRed = green
-authnMVPDRed = green
-authzMVPDRed = green
-authLatMVPDRed= green
+authnSDKRed = ''
+authzSDKRed = ''
+authnMVPDRed = ''
+authzMVPDRed = ''
+authLatMVPDRed= ''
 sdkBreak = 'iOS'
 mvpdBreak = 'WOW'
 
@@ -35,19 +35,11 @@ mvpdBreak = 'WOW'
 from selenium.common.exceptions import NoSuchAttributeException
 from selenium.webdriver.common.keys import Keys
 
-chromedriver = "/users/rutherfordle/PycharmProjects/Crawl/chromedriver"
-os.environ["webdriver.chrome.driver"] = chromedriver
-driver = webdriver.Chrome(chromedriver)
-#driver = webdriver.Chrome()
-driver.get('https://pulse.conviva.com/login?next=/reports/15/')
-username = driver.find_element_by_name("username")
-password = driver.find_element_by_name("password")
 
-username.send_keys("ssargent@adobe.com")
-password.send_keys("")
+
 
 driver.find_element_by_class_name("submit").click()
-time.sleep(2)
+time.sleep(3)
 delay = 3
 try:
     conc = driver.find_element_by_xpath('//*[@id="w_0"]/div/div[4]').text
@@ -114,7 +106,7 @@ try:
             authn = plat + ' ' + str(authnPerc) + '% ' + green
         else:
             authn = plat + ' ' + str(authnPerc) + '% ' + red
-            authnSDKRed = plat + ' (' + str(authnSucc) + '/' + str(authnPend) + ') ' + str(authnPerc * 100) + '% '
+            authnSDKRed += plat + ' (' + str(authnSucc) + '/' + str(authnPend) + ') ' + str(authnPerc) + '% '
             authnSDKRed += red + '\n'
 
         authn += '\n'
@@ -129,7 +121,7 @@ try:
             authz = plat + ' ' + str(authzPerc) + '% ' + green
         else:
             authz = plat + ' ' + str(authzPerc) + '% ' + red
-            authzSDKRed = plat + ' (' + str(authzSucc) + '/' + str(authzPend) + ') ' + str(authzPerc * 100) + '% '
+            authzSDKRed += plat + ' (' + str(authzSucc) + '/' + str(authzPend) + ') ' + str(authzPerc) + '% '
             authzSDKRed += red + '\n'
 
         authz += '\n'
@@ -196,7 +188,7 @@ try:
             authn = plat2 + ' ' + str(authnPerc) + '% ' + green
         else:
             authn = plat2 + ' ' + str(authnPerc) + '% ' + red
-            authnMVPDRed = plat2 + ' (' + str(authnSucc) + '/' + str(authnPend) + ') ' + str(authnPerc * 100) + '% '
+            authnMVPDRed += plat2 + ' (' + str(authnSucc) + '/' + str(authnPend) + ') ' + str(authnPerc) + '% '
             authnMVPDRed += red + '\n'
 
         authn += '\n'
@@ -211,7 +203,7 @@ try:
             authz = plat2 + ' ' + str(authzPerc) + '% ' + green
         else:
             authz = plat2 + ' ' + str(authzPerc) + '% ' + red
-            authzMVPDRed = plat2 + ' (' + str(authzSucc) + '/' + str(authzPend) + ') ' + str(authzPerc * 100) + '% '
+            authzMVPDRed += plat2 + ' (' + str(authzSucc) + '/' + str(authzPend) + ') ' + str(authzPerc) + '% '
             authzMVPDRed += red + '\n'
 
         authz += '\n'
@@ -226,7 +218,7 @@ try:
             authzLat = plat2 + ' ' + str(authzLatencySec) + ' ' + green
         else:
             authzLat = plat2 + ' ' + str(authzLatencySec) + ' ' + red
-            authLatMVPDRed = plat2 + ' (' + str(authzLatency) + '/' + str(authzAttempts) + ') ' + str(authzLatencySec * 100) + '% '
+            authLatMVPDRed += plat2 + ' (' + str(authzLatency) + '/' + str(authzAttempts) + ') ' + str(authzLatencySec) + ' '
             authLatMVPDRed += red + '\n'
 
         authzLat += '\n'
@@ -307,6 +299,17 @@ try:
         print('VSF Roku: ' + str(vsfRoku) + ' ' + red)
     print(result + '\n')
 
+    if authnSDKRed == '':
+        authnSDKRed = green
+    if authzSDKRed == '':
+        authzSDKRed = green
+    if authnMVPDRed == '':
+        authnMVPDRed = green
+    if authzMVPDRed == '':
+        authzMVPDRed = green
+    if authLatMVPDRed == '':
+        authLatMVPDRed = green
+
     print('AuthnSDK = ' + authnSDKRed)
     print('AuthzSDK = ' + authzSDKRed)
     print('AuthnMVPD = ' + authnMVPDRed)
@@ -323,6 +326,6 @@ except TimeoutException:
     #f.write(r.content)
     #f.write(response.content)
     # print(r.content)
-    driver.quit();
+driver.quit();
     #driver2.quit();
 
