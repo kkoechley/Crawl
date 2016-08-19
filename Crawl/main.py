@@ -5,11 +5,11 @@ import sys
 sys.path.insert(0, '/Users/rutherfordle/PycharmProjects/')
 import CrawlConnect
 
-#Import WebDriver, page direct and credential from external directory CrawlConnect
+#Import WebDriver, page direct and credential from external directory CrawlConnect. Sample provided
 driver = CrawlConnect.driver
 
-ssai = '25843'
-ssaiperc = '99.75'
+ssai = '21552'
+ssaiperc = '99.44'
 
 green = "GREEN"
 red = "RED"
